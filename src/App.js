@@ -34,7 +34,7 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/">
-          <iframe></iframe>
+          <iframe width='500px' height='500px' src={'https://slides.com/bernatesquirol/test-splittt/fullscreen#/'}></iframe>
           <button onClick={()=>{changeCookieReact(cookieReact+1);document.cookie=cookie.serialize('slides', cookieReact+1)}}>set cookie</button>
           {document.cookie.slides}
           {`${cookieReact}`}
