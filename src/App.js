@@ -26,10 +26,11 @@ firebase.initializeApp(firebaseConfig)
 function App() {
   const [user, changeUser] = useState(null)
   const [confirmed, changeConfirmed] = useState(true)
+
   const [cookieReact, changeCookieReact] = useState(0)
-  // useEffect(()=>{
-  //   changeCookieReact(cookie.parse(document.cookie).slides)
-  // })
+  useEffect(()=>{
+    changeCookieReact(cookie.parse(document.cookie).slides)
+  })
   return (
     <Router>
       <Switch>
