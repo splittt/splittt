@@ -1,18 +1,20 @@
 import React, {useState, useEffect} from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { Modal, Input, Button } from 'semantic-ui-react'
+import { Input, Button } from 'semantic-ui-react'
 import {
   HashRouter as Router,
   Switch,
   Route,
-  Redirect
+  useParams,
+  useHistory
 } from "react-router-dom";
-import firebase from 'firebase'
-import Dashboard from './components/Dashboard'
-import Play from './components/Play'
-import Teacher from './components/Teacher'
 import cookie from 'cookie'
+import firebase from 'firebase'
+import Teacher from './components/Teacher'
+import LobbyProfessor from './components/LobbyProfessor'
+import Room from './components/Room'
+import Lobby from './components/Lobby'
+
 const firebaseConfig  ={
   apiKey: "AIzaSyAXuYMUodZvHzxgJKqzr5OFX32G0YH_pX4",
   authDomain: "split-games.firebaseapp.com",
@@ -23,45 +25,46 @@ const firebaseConfig  ={
   appId: "1:39941079391:web:0ddd79b690167fb3ddf6ea"
 }
 firebase.initializeApp(firebaseConfig)
+const db = firebase.firestore()
+
+function Play(props){
+  const { room_id, group_id, user_id } = useParams();
+  
+}
 function App() {
   const [user, changeUser] = useState(null)
   const [confirmed, changeConfirmed] = useState(true)
-
-  const [cookieReact, changeCookieReact] = useState(0)
+  const [professor, changeProfessorCookie] = useState(false)
+  const [roomId, changeRoomId] = useState(cookie.parse(document.cookie).roomId)
+  const [groupId, changeGroupId] = useState(cookie.parse(document.cookie).groupId)
+  const [userId, changeUserId] = useState(cookie.parse(document.cookie).userId)
   useEffect(()=>{
-    changeCookieReact(cookie.parse(document.cookie).slides)
-  })
+    changeProfessorCookie(cookie.parse(document.cookie).professor)
+    cookie.parse(document.cookie)
+  }, [document.cookie])
   return (
     <Router>
       <Switch>
         <Route exact path="/">
-          <iframe width='500px' height='500px' src={'https://slides.com/bernatesquirol/test-splittt/fullscreen#/'}></iframe>
-          <button onClick={()=>{changeCookieReact(cookieReact+1);document.cookie=cookie.serialize('slides', cookieReact+1)}}>set cookie</button>
+          <Teacher></Teacher>
+        </Route>
+        <Route exact path="/room/:room_id">
+          {roomId}
+          {professor && <><div>You are the professor</div><LobbyProfessor></LobbyProfessor></>}
+          {!professor && <Room></Room>}
+          {/* <button onClick={()=>{changeCookieReact(cookieReact+1);document.cookie=cookie.serialize('slides', cookieReact+1)}}>set cookie</button>
           {document.cookie.slides}
-          {`${cookieReact}`}
+          {`${cookieReact}`} */}
         </Route>
-        <Route path="/provaslides">
-          hey {document.cookie.slides}
-          {`${cookieReact}`}
+        <Route exact path="/room/:room_id/:user_id/">
+          {roomId}, {userId}
+          {professor?<div>You should not be here</div>:<Lobby></Lobby>}
         </Route>
-        <Route path="/play/:id">
-          {!confirmed? (
-              <Modal open={!confirmed}>
-                <Modal.Header>Benvinguda a Split!</Modal.Header>
-                <Modal.Content>
-                  <Input placeholder="Nom d'usuari" onChange={(e,{value})=>changeUser(value)} value={user}></Input>
-                  <br/>
-                  <Button active={user!=null} onClick={()=>{changeConfirmed(true)}}>A jugar!</Button>
-                </Modal.Content>
-              </Modal>
-            ):<Play user={'prova'}></Play>}
+        <Route path="/room/:room_id/:group_id/:user_id/">
+          {roomId}, {groupId}, {userId}
+          <Lobby></Lobby>
         </Route>
-        <Route path="/teacher">
-            <Teacher></Teacher>
-        </Route>
-        <Route path="dashboard">
-          <Dashboard user={user}></Dashboard>
-        </Route>
+        
       </Switch>
     </Router>
   );
