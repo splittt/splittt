@@ -53,7 +53,7 @@ function Team({group, children}){
     })
     return (
         <div ref={drop} >
-            {group.name}
+            {group.name} - {group.id}
             {children}
         </div>
     )

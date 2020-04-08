@@ -2,7 +2,7 @@ import React,{useState, useEffect} from 'react';
 import { Grid, Image } from 'semantic-ui-react';
 import _ from 'lodash'
 import firebase from 'firebase'
-
+import Activity from './Activity'
 const getColumnAndRowsNumbers = (players)=>{
   switch(players) {
       case 0:
@@ -40,6 +40,7 @@ function ActivityPanel (props) {
     const teamMatesIds = teamMates.map((u)=>u.id)
     const [ users, changeUsers ] = useState({})
     const [ activitiesByUser, changeActivitiesByUser ] = useState({})
+    const [ activityTypeData, changeActivityTypeData ] = useState({})
     useEffect(()=>{
         if (!props.roomId || !props.groupId) return
         db.collection(`room/${props.roomId}/groups`).doc(props.groupId).get().then((group)=>{
@@ -53,7 +54,7 @@ function ActivityPanel (props) {
           docs.sort((d1,d2)=>d1.id>d2.id)
           let usersDict = usersCall.docs.reduce((acc,u)=>({...acc, [u.id]: {...u.data(), id:u.id}}),{})
           return changeUsers(usersDict)
-        }).then(()=>{console.log('ja')})
+        })
     },[props.roomId,, props.groupId, props.activityId])
     useEffect(()=>{
         if (!props.roomId || !props.groupId || !props.activityId || Object.keys(users).length==0) return
@@ -61,14 +62,37 @@ function ActivityPanel (props) {
             .where('activityId','==',props.activityId)    
             .where('userId','in', teamMatesIds)
             .onSnapshot((activities)=>{
-              let groupByObject = _.groupBy(activities.docs.map((a)=>a.data()), (a)=>a.userId)
+                let dataActivities = activities.docs.map((a)=>a.data())
+                dataActivities = _.sortBy(dataActivities,(a1)=>a1.createdAt)
+                let groupByObject = _.groupBy(dataActivities, (a)=>a.userId)
+
               changeActivitiesByUser(groupByObject)
             })
     }, [props.roomId, props.groupId, props.activityId, users])
 
+    useEffect(()=>{
+        if (!props.activityId) return
+        db.collection(`activityTypes`).doc(props.activityId).get().then((a)=>{
+            changeActivityTypeData(a.data())
+        })
+    }, [props.activityId])
 
     const [cols, rows, wierd] = getColumnAndRowsNumbers(teamMatesIds.length)
     console.log("props", props.roomId, props.groupId, props.activityId, props.userId)
+
+    const getActivity=(i)=>{
+        return <Activity userId={teamMatesIds[i]}
+                  userControlled={teamMatesIds[i]==props.userId} 
+                  activityId={props.activityId}
+                  activityEvents={activitiesByUser[teamMatesIds[i]]}
+                  activityTypeData={activityTypeData}                  
+                  teamMatesIds={teamMatesIds}
+                  updateFunction={(actObj)=>{
+                    db.collection(`room/${props.roomId}/activites`).add(actObj)
+                  }}
+                  />
+    }
+
     return (
     <>
       {/* <div>Activity {props.activityId}, {props.roomId}, { props.groupId}, { props.userId}</div> */}
@@ -79,8 +103,7 @@ function ActivityPanel (props) {
                 <Grid.Row>
                 {Array.apply(null, Array(cols-1)).map((m, i)=>(
                     <Grid.Column>
-                      <Image src='https://react.semantic-ui.com/images/wireframe/media-paragraph.png' />
-                      <p>{teamMatesIds[i]}</p>
+                      {getActivity(i)}
                     </Grid.Column>
                 ))}  
                 </Grid.Row>
@@ -90,8 +113,7 @@ function ActivityPanel (props) {
                 return (<Grid.Row>
                 {Array.apply(null, Array(cols)).map((m, i)=>(
                     <Grid.Column>
-                        <Image src='https://react.semantic-ui.com/images/wireframe/media-paragraph.png' />
-                        <p>{teamMatesIds[i+base]}</p>
+                        {getActivity(i)}
                     </Grid.Column>
                 ))}
                 </Grid.Row>)
@@ -102,8 +124,7 @@ function ActivityPanel (props) {
                   let base = wierd==2? cols-2:0
                   base += rows>=2? (rows-wierd)*cols : 0
                   return (<Grid.Column>
-                        <Image src='https://react.semantic-ui.com/images/wireframe/media-paragraph.png' />
-                        <p>{teamMatesIds[i+base]}</p>
+                        {getActivity(i)}
                     </Grid.Column>)
                 })}  
                 </Grid.Row>
