@@ -9,10 +9,11 @@ import firebase from 'firebase'
 function Lobby(props){
     const db = firebase.firestore()
     const { room_id, group_id, user_id } = useParams();
+    // set all the cookies
     useEffect(()=>{
-      document.cookie = cookie.serialize('room_id', room_id)  
-      document.cookie = cookie.serialize('group_id', group_id)  
-      document.cookie = cookie.serialize('user_id', group_id)  
+      if (room_id) document.cookie = cookie.serialize('room_id', room_id)  
+      if (group_id) document.cookie = cookie.serialize('group_id', group_id)  
+      if (user_id) document.cookie = cookie.serialize('user_id', user_id)
     }, [room_id, group_id, user_id])
     const [ teamMates, changeTeamMates ] = useState([])
     const teamMatesIds = teamMates.map((u)=>u.id)
