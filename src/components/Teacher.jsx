@@ -1,6 +1,6 @@
 
 import React, {useState, useEffect, useRef, useCallback} from 'react';
-import { List, Button, Checkbox, Input, Modal, Form, Header, Label } from 'semantic-ui-react'
+import { List, Button, Checkbox, Grid, Modal, Form, Header, Label } from 'semantic-ui-react'
 import cookie from 'cookie'
 import firebase from '../config/firebase'
 import OrderableListItem from './OrderableListItem';
@@ -71,7 +71,7 @@ function CreateActivityModal (props) {
     const getChangeActivityDataKey = (key)=> ((e, {value})=>{changeActivityData({...activityData,[key]:value})})
     const activityTypes = Object.keys(activityExtraFields).map((k)=>({key:k, value:k, text:activityNames[k]}))
     const [open, setOpen] = useState(false)
-    return (<Modal trigger={<Button onClick={()=>setOpen(true)} >Crea una nova activitat</Button>} onClose={()=>setOpen(false)} open={open}>
+    return (<Modal trigger={<Button style={{padding:3, marginLeft:5, marginTop:3}} onClick={()=>setOpen(true)} icon='add'></Button>} onClose={()=>setOpen(false)} open={open}>
         <Modal.Header>Crea una nova activitat</Modal.Header>
         <Modal.Content>
             <Form>
@@ -167,8 +167,8 @@ function createJSONslides (id, roomValues,selectedActivities){
 }
 
 function Teacher (props) {
-    // const [roomId, changeRoomId] = useState(null)
-    // const link = document.location.href+'room/'+roomId
+    const [showLink, changeShowLink] = useState(false)
+    // const showLink = document.location.href+'room/'+roomId
     const form = useRef(null)
     const db = firebase.firestore()
     const [roomValues, changeRoomValues] = useState({numGroups:1, name:''})
@@ -212,44 +212,82 @@ function Teacher (props) {
         changeActivities(newActivities)
     }
     return (
-    <>  
+    <div className="App">  
         <Header>Nova classe</Header>
-        <Form>
-          <Form.Input label={'Nom de la classe'} value={roomValues.name} onChange={(e, {value})=>changeRoomValues({...roomValues,name:value})}></Form.Input>
-          <Form.Input label={'Nombre de grups'} type='number' value={roomValues.numGroups} onChange={(e, {value})=>changeRoomValues({...roomValues,numGroups:parseInt(value)})}></Form.Input>
-        </Form>
-        <hr/>
-        <List>
-        <label className='label-semantic'>Activitats disponibles</label><CreateActivityModal callback={(activityData, doc)=>{changeSelectedActivities([...selectedActivities, {...activityData, id:doc.id}])}}/>
+        <Grid style={{marginBottom:20}}>
+        <Grid.Row columns={2}>
+        <Grid.Column>
+          <Form>
+            <Form.Input label={'Nom de la classe'} value={roomValues.name} onChange={(e, {value})=>changeRoomValues({...roomValues,name:value})}></Form.Input>
+          </Form>
+        </Grid.Column>
+        <Grid.Column>
+          <Form>
+            <Form.Input label={'Nombre de grups'} type='number' value={roomValues.numGroups} onChange={(e, {value})=>changeRoomValues({...roomValues,numGroups:parseInt(value)})}></Form.Input>
+          </Form>
+        </Grid.Column>
+        </Grid.Row>
+        
+        
+        <Grid.Row columns={2} style={{minHeight:200}}>
+        <Grid.Column>
+        <List divided>
+        <label className='label-semantic'>Activitats disponibles<CreateActivityModal callback={(activityData, doc)=>{changeSelectedActivities([...selectedActivities, {...activityData, id:doc.id}])}}/></label>
         {activities.filter((a)=>!a.checked).map((card, i) => renderItem({...card}, i, false, onCheck))}
         
         </List>
-        
-        <List>        
+        </Grid.Column>
+        <Grid.Column>
+        <List divided>        
         <label className='label-semantic'>Activitats per la classe (ordenades)</label>
         <DndProvider backend={Backend}>
             {selectedActivities.map((card, i) => renderItemDrag({...card}, i, onCheck, moveCard))}
         </DndProvider>
         </List>
-        
+        </Grid.Column>
+        </Grid.Row>
+        <Grid.Row columns={1} style={{minHeight:200}}>
+        <Grid.Column>
         <form ref={form} action="https://slides.com/decks/define" method="POST" target="_blank">
             <textarea style={{display:'none'}} name="definition">{`${JSON.stringify({})}`}</textarea>
         </form>
-        <Button disabled={!roomValues.name||selectedActivities.length==0} onClick={()=>{
+        <Button.Group style={{marginBottom:20}}>
+          <Button disabled={!roomValues.name||selectedActivities.length==0} onClick={()=>{
+            if(!roomValues.id){
+              createRoom(roomValues, (id)=>{
+                changeRoomValues({...roomValues, id:id})
+                // form.current.children[0].value = createJSONslides(id, roomValues, selectedActivities)
+                // form.current.submit()
+                changeShowLink(true)
+              })
+            }else{
+              changeShowLink(true)
+            }  
+          }}>Aconsegueix el link</Button>
+          <Button.Or />
+          <Button primary disabled={!roomValues.name||selectedActivities.length==0} onClick={()=>{
           if(!roomValues.id){
             createRoom(roomValues, (id)=>{
               changeRoomValues({...roomValues, id:id})
-              form.current.children[0].value=createJSONslides(id, roomValues, selectedActivities)
+              form.current.children[0].value = createJSONslides(id, roomValues, selectedActivities)
               form.current.submit()
             })
           }else{
-            form.current.children[0].value=createJSONslides(roomValues.id, roomValues, selectedActivities)
+            form.current.children[0].value = createJSONslides(roomValues.id, roomValues, selectedActivities)
             form.current.submit()
           }
-        }}>Try slides.com</Button>
-        <Label pointing='right' active={roomValues.name==''}>Your password must be 6 characters or more</Label>
-        {/* {link?<div>Here is your link: <a href={link}>{link}</a></div>:null} */}
-    </>)
+        }}>Crea una presentació</Button>
+        </Button.Group>
+        {/* <Label active={!roomValues.name||selectedActivities.length==0}>Your password must be 6 characters or more</Label> */}
+        </Grid.Column>
+        </Grid.Row>
+        <Grid.Row column={1}>
+          <Grid.Column>
+          {showLink?<div>Aquí tens el link per compartir: <a href={document.location.href+'room/'+roomValues.id}>{document.location.href+'room/'+roomValues.id}</a></div>:null}
+          </Grid.Column>
+        </Grid.Row>
+        </Grid>
+    </div>)
 }
 
 

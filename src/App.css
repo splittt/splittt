@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  padding: 40px
 }
 
 .App-logo {
@@ -44,4 +45,10 @@
   font-size: .92857143em;
   font-weight: 700;
   text-transform: none
+}
+.slidescom-button{
+  background-color:'#e5637c'!important
+}
+.slidescom-button:hover{
+  background-color:'#c83854'!important
 }

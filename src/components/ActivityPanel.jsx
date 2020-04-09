@@ -131,10 +131,6 @@ function ActivityPanel (props) {
                 </Grid.Row>
             }
         </Grid>):null}
-
-      <button onClick={()=>{
-        db.collection(`room/${props.roomId}/activites`).doc().set({userId: props.userId, value: 'prova'+props.userId, activityId: props.activityId})
-      }}>HEY</button>
     </>)
 }
 export default ActivityPanel

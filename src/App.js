@@ -14,7 +14,7 @@ import LobbyProfessor from './components/LobbyProfessor'
 import Room from './components/Room'
 import Lobby from './components/Lobby'
 import ActivityPanel from './components/ActivityPanel'
-
+import 'semantic-ui-less/semantic.less'
 
 
 function Play(props){
