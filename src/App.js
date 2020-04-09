@@ -16,17 +16,7 @@ import Room from './components/Room'
 import Lobby from './components/Lobby'
 import ActivityPanel from './components/ActivityPanel'
 
-const firebaseConfig  ={
-  apiKey: "AIzaSyAXuYMUodZvHzxgJKqzr5OFX32G0YH_pX4",
-  authDomain: "split-games.firebaseapp.com",
-  databaseURL: "https://split-games.firebaseio.com",
-  projectId: "split-games",
-  storageBucket: "split-games.appspot.com",
-  messagingSenderId: "39941079391",
-  appId: "1:39941079391:web:0ddd79b690167fb3ddf6ea"
-}
-firebase.initializeApp(firebaseConfig)
-const db = firebase.firestore()
+
 
 function Play(props){
   const { room_id, group_id, user_id } = useParams();

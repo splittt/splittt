@@ -1,7 +1,7 @@
 import React,{useState, useEffect} from 'react';
 import { Grid, Image } from 'semantic-ui-react';
 import _ from 'lodash'
-import firebase from 'firebase'
+import firebase from '../config/firebase'
 import Activity from './Activity'
 
 const getColumnAndRowsNumbers = (players)=>{

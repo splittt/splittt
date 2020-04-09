@@ -6,7 +6,7 @@ import {
   useHistory
 } from "react-router-dom";
 import cookie from 'cookie'
-import firebase from 'firebase'
+import firebase from '../config/firebase'
 import { useDrag, useDrop } from 'react-dnd'
 import { DndProvider } from 'react-dnd'
 import Backend from 'react-dnd-html5-backend'

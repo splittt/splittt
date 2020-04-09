@@ -2,7 +2,7 @@
 import React, {useState, useEffect, useRef, useCallback} from 'react';
 import { List, Button, Checkbox, Input, Modal, Form, Header, Label } from 'semantic-ui-react'
 import cookie from 'cookie'
-import firebase from 'firebase'
+import firebase from '../config/firebase'
 import OrderableListItem from './OrderableListItem';
 import update from 'immutability-helper'
 import { DndProvider } from 'react-dnd'

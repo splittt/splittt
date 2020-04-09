@@ -5,7 +5,7 @@ import {
   useParams,
   useHistory
 } from "react-router-dom";
-import firebase from 'firebase'
+import firebase from '../config/firebase'
 
 function Room(props){
     const db = firebase.firestore()
