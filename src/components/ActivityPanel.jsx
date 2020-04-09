@@ -3,6 +3,7 @@ import { Grid, Image } from 'semantic-ui-react';
 import _ from 'lodash'
 import firebase from 'firebase'
 import Activity from './Activity'
+
 const getColumnAndRowsNumbers = (players)=>{
   switch(players) {
       case 0:
@@ -72,7 +73,7 @@ function ActivityPanel (props) {
 
     useEffect(()=>{
         if (!props.activityId) return
-        db.collection(`activityTypes`).doc(props.activityId).get().then((a)=>{
+        db.collection(`activities`).doc(props.activityId).get().then((a)=>{
             changeActivityTypeData(a.data())
         })
     }, [props.activityId])
