@@ -4,7 +4,8 @@ import {
   useParams
 } from "react-router-dom";
 import cookie from 'cookie'
-import firebase from 'firebase'
+import firebase from '../config/firebase'
+
 
 function Lobby(props){
     const db = firebase.firestore()

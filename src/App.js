@@ -9,7 +9,6 @@ import {
   useLocation
 } from "react-router-dom";
 import cookie from 'cookie'
-import firebase from 'firebase'
 import Teacher from './components/Teacher'
 import LobbyProfessor from './components/LobbyProfessor'
 import Room from './components/Room'

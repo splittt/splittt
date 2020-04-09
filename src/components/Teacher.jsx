@@ -9,12 +9,7 @@ import { DndProvider } from 'react-dnd'
 import Backend from 'react-dnd-html5-backend'
 import {activityExtraFields, activityNames} from './activitiesEnum'
 import axios from 'axios'
-const prova = [{id: '1',text: 'Write a cool JS library'},
-{ id: '2', text: 'Make it generic enough'}, 
-{ id: '3', text: 'Write README'}]
-const prova2 = [{id: 4,text: 'Write a cool JS library'},
-{ id: 5, text: 'Make it generic enough'}, 
-{ id: 6, text: 'Write README'}]
+
 
 //DBs
 const createRoom=(roomValues, changeRoomId)=>{
@@ -178,7 +173,7 @@ function Teacher (props) {
     const db = firebase.firestore()
     const [roomValues, changeRoomValues] = useState({numGroups:1, name:''})
     const [selectedActivities, changeSelectedActivities] = useState([])
-    const [activities, changeActivities] = useState(prova)
+    const [activities, changeActivities] = useState([])
     const moveCard = useCallback((dragIndex, hoverIndex) => {
         const dragCard = selectedActivities[dragIndex]
         changeSelectedActivities(
