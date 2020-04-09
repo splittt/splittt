@@ -44,7 +44,9 @@ function Lobby(props){
     const getUsersNames = (refs)=>refs.filter((u)=>Object.keys(users).indexOf(u.id)>=0).map((u)=>users[u.id].name).join(', ')
     const usersNotTeam = Object.values(users).filter((u)=>u.id!=user_id && teamMatesIds.indexOf(u.id)<0)
     const me = Object.values(users).filter((u)=>u.id==user_id)
-    return <div>You are: {getUsersNames(me)}. In your team {getUsersNames(teamMates)}. Also playing: {getUsersNames(usersNotTeam)}</div>
+    return (<div>
+              You are: {getUsersNames(me)}. In your team {getUsersNames(teamMates)}. Also playing: {getUsersNames(usersNotTeam)}
+            </div>)
   
   }
 export default Lobby

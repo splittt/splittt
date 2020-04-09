@@ -54,7 +54,7 @@ const renderItemDrag = (props, index, onCheck,  moveCard) => {
             moveCard={moveCard}
             {...props}
         >
-        {<List.Item index={index}>{index+1}. {props.name}<Button negative compact icon='delete'  style={{padding:2, paddingLeft:1, paddingRight:1, marginLeft:8}} onClick={()=>onCheck(index, props.id, false)}/></List.Item>}
+        {<List.Item index={index}>{index+1}. {props.name}<Button primary compact icon='delete'  style={{padding:2, paddingLeft:1, paddingRight:1, marginLeft:8}} onClick={()=>onCheck(index, props.id, false)}/></List.Item>}
         
       </OrderableListItem>
     )
@@ -218,7 +218,7 @@ function Teacher (props) {
         <Grid.Row columns={2}>
         <Grid.Column>
           <Form>
-            <Form.Input label={'Nom de la classe'} value={roomValues.name} onChange={(e, {value})=>changeRoomValues({...roomValues,name:value})}></Form.Input>
+            <Form.Input label={'Nom de la classe'} placeholder={'Escriu aquí un nom per la classe'} value={roomValues.name} onChange={(e, {value})=>changeRoomValues({...roomValues,name:value})}></Form.Input>
           </Form>
         </Grid.Column>
         <Grid.Column>
@@ -239,14 +239,14 @@ function Teacher (props) {
         </Grid.Column>
         <Grid.Column>
         <List divided>        
-        <label className='label-semantic'>Activitats per la classe (ordenades)</label>
+        <label className='label-semantic' >Activitats escollides</label>
         <DndProvider backend={Backend}>
             {selectedActivities.map((card, i) => renderItemDrag({...card}, i, onCheck, moveCard))}
         </DndProvider>
         </List>
         </Grid.Column>
         </Grid.Row>
-        <Grid.Row columns={1} style={{minHeight:200}}>
+        <Grid.Row columns={1} style={{marginBottom:20}}>
         <Grid.Column>
         <form ref={form} action="https://slides.com/decks/define" method="POST" target="_blank">
             <textarea style={{display:'none'}} name="definition">{`${JSON.stringify({})}`}</textarea>
