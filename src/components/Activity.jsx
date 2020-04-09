@@ -3,8 +3,8 @@ import { Grid, Image } from 'semantic-ui-react';
 import {activityComponents} from './activitiesEnum'
 
 function Activity (props) {
-    const {renderItem} = props.activityTypeData
-    return React.createElement(activityComponents[renderItem], props)
+    const {type} = props.activityTypeData
+    return React.createElement(activityComponents[type], props)
 }
 
 export default Activity

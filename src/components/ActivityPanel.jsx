@@ -41,7 +41,7 @@ function ActivityPanel (props) {
     const teamMatesIds = teamMates.map((u)=>u.id)
     const [ users, changeUsers ] = useState({})
     const [ activitiesByUser, changeActivitiesByUser ] = useState({})
-    const [ activityTypeData, changeActivityTypeData ] = useState({})
+    const [ activityTypeData, changeActivityTypeData ] = useState(null)
     useEffect(()=>{
         if (!props.roomId || !props.groupId) return
         db.collection(`room/${props.roomId}/groups`).doc(props.groupId).get().then((group)=>{
@@ -104,7 +104,7 @@ function ActivityPanel (props) {
                 <Grid.Row>
                 {Array.apply(null, Array(cols-1)).map((m, i)=>(
                     <Grid.Column>
-                      {getActivity(i)}
+                      {activityTypeData?getActivity(i):<p>wait...</p>}
                     </Grid.Column>
                 ))}  
                 </Grid.Row>
@@ -114,7 +114,7 @@ function ActivityPanel (props) {
                 return (<Grid.Row>
                 {Array.apply(null, Array(cols)).map((m, i)=>(
                     <Grid.Column>
-                        {getActivity(i)}
+                        {activityTypeData?getActivity(i):<p>wait...</p>}
                     </Grid.Column>
                 ))}
                 </Grid.Row>)
@@ -125,7 +125,7 @@ function ActivityPanel (props) {
                   let base = wierd==2? cols-2:0
                   base += rows>=2? (rows-wierd)*cols : 0
                   return (<Grid.Column>
-                        {getActivity(i)}
+                        {activityTypeData?getActivity(i):<p>wait...</p>}
                     </Grid.Column>)
                 })}  
                 </Grid.Row>
