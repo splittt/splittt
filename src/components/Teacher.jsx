@@ -12,7 +12,7 @@ import axios from 'axios'
 
 
 //DBs
-const createRoom=(roomValues, changeRoomId)=>{
+const createRoom=(roomValues, selectedActivities, changeRoomId)=>{
     const db = firebase.firestore()
     let roomDoc = db.collection('room').doc()
             
@@ -21,12 +21,12 @@ const createRoom=(roomValues, changeRoomId)=>{
         docsGroups.forEach((d)=>{
         groupUsersCount[d.id]=0
     })
-    let setValuesPromise = roomDoc.set({...roomValues, groupUsersCount:groupUsersCount})
+    let setValuesPromise = roomDoc.set({...roomValues, groupUsersCount:groupUsersCount, activitiesIds: selectedActivities.map((a)=>a.id)})
     let initGroupsPromise = Promise.all(docsGroups.map((d,i)=>
         d.set({ 
             name:'Equip '+String.fromCharCode(i+65),
             users:[],
-
+            
         })
     ))
     document.cookie = cookie.serialize('professor', roomDoc.id)
@@ -113,7 +113,7 @@ function createJSONslides (id, roomValues,selectedActivities){
               },
               {
                 "type": "iframe",
-                "value": link+'?activityId='+activity.id
+                "value": link+'?activityId='+activity.id+'&withSlides=true'
               }
             ]}
   }
@@ -156,7 +156,7 @@ function createJSONslides (id, roomValues,selectedActivities){
           },
           {
             "type": "iframe",
-            "value": link
+            "value": link+'?withSlides=true'
           }
         ]
       },
@@ -254,7 +254,7 @@ function Teacher (props) {
         <Button.Group style={{marginBottom:20}}>
           <Button disabled={!roomValues.name||selectedActivities.length==0} onClick={()=>{
             if(!roomValues.id){
-              createRoom(roomValues, (id)=>{
+              createRoom(roomValues, selectedActivities, (id)=>{
                 changeRoomValues({...roomValues, id:id})
                 // form.current.children[0].value = createJSONslides(id, roomValues, selectedActivities)
                 // form.current.submit()
@@ -267,7 +267,7 @@ function Teacher (props) {
           <Button.Or />
           <Button primary disabled={!roomValues.name||selectedActivities.length==0} onClick={()=>{
           if(!roomValues.id){
-            createRoom(roomValues, (id)=>{
+            createRoom(roomValues, selectedActivities, (id)=>{
               changeRoomValues({...roomValues, id:id})
               form.current.children[0].value = createJSONslides(id, roomValues, selectedActivities)
               form.current.submit()
@@ -283,7 +283,14 @@ function Teacher (props) {
         </Grid.Row>
         <Grid.Row column={1}>
           <Grid.Column>
-          {showLink?<div>Aquí tens el link per compartir: <a href={document.location.href+'room/'+roomValues.id}>{document.location.href+'room/'+roomValues.id}</a></div>:null}
+          {showLink?
+            <div>Aquí tens el link per compartir: <br/>
+                <a href={document.location.href+'room/'+roomValues.id}>{document.location.href+'room/'+roomValues.id}</a>
+                <br></br>
+                {selectedActivities.map(a=><><a href={document.location.href+'room/'+roomValues.id+'?activityId='+a.id}>{document.location.href+'room/'+roomValues.id+'?activityId='+a.id}</a><br/></>)}
+                </div>
+          
+          :null}
           </Grid.Column>
         </Grid.Row>
         </Grid>

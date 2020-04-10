@@ -1,6 +1,6 @@
 
 import React, {useState, useEffect} from 'react';
-import { Input, Button } from 'semantic-ui-react'
+import { Input, Button, Grid } from 'semantic-ui-react'
 import {
   useParams,
   useHistory
@@ -40,9 +40,24 @@ function Room(props){
       })
       // 
     }
-    return <div>
-            <Input onChange={(e, {value})=>changeUseData({...userData,name:value})} value={userData.name}></Input>
-            <Button onClick={createUser}>Save</Button>
+    return <div className='App'>
+            <Grid style={{borderStyle:'solid', borderColor:'#e5637c'}}>
+              <Grid.Row>
+              <Grid.Column>
+              <label className='label-semantic'>Nom d'usuari:</label>
+              </Grid.Column>  
+              </Grid.Row>
+              <Grid.Row>
+              <Grid.Column>
+              <Input onChange={(e, {value})=>changeUseData({...userData,name:value})} value={userData.name}></Input>
+              </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+              <Grid.Column>
+              <Button onClick={createUser} primary>Save</Button>
+              </Grid.Column>  
+              </Grid.Row>
+            </Grid>
           </div>
 }
 export default Room

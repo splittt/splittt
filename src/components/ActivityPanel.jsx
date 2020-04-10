@@ -3,6 +3,15 @@ import { Grid, Image } from 'semantic-ui-react';
 import _ from 'lodash'
 import firebase from '../config/firebase'
 import Activity from './Activity'
+import {
+    useParams,
+    useHistory,
+    useLocation
+} from "react-router-dom";
+
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
 
 const getColumnAndRowsNumbers = (players)=>{
   switch(players) {
@@ -37,6 +46,7 @@ const getColumnAndRowsNumbers = (players)=>{
 
 function ActivityPanel (props) {
     const db = firebase.firestore()
+    const history = useHistory()
     const [ teamMates, changeTeamMates ] = useState([])
     const teamMatesIds = teamMates.map((u)=>u.id)
     const [ users, changeUsers ] = useState({})
@@ -58,7 +68,7 @@ function ActivityPanel (props) {
         })
     },[props.roomId,, props.groupId, props.activityId])
     useEffect(()=>{
-        if (!props.roomId || !props.groupId || !props.activityId || Object.keys(users).length==0) return
+        if (!props.roomId || !props.groupId || !props.activityId || Object.keys(teamMatesIds).length==0) return
         db.collection(`room/${props.roomId}/activites`)
             .where('activityId','==',props.activityId)    
             .where('userId','in', teamMatesIds)
@@ -78,11 +88,25 @@ function ActivityPanel (props) {
         })
     }, [props.activityId])
 
+    // let withSlides = useQuery().get('withSlides')
+    // useEffect(()=>{
+    //   if (withSlides) return
+    //   const listener = db.collection('room').doc(props.roomId).onSnapshot((r)=>{
+    //     let currentActivity = r.data().currentActivity
+    //     if (currentActivity){ 
+    //       listener()
+    //       history.push(`/room/${props.roomId}?activityId=${currentActivity}`)
+    //     }
+    //   })
+    // }, [props.roomId, withSlides])
+
     const [cols, rows, wierd] = getColumnAndRowsNumbers(teamMatesIds.length)
     console.log("props", props.roomId, props.groupId, props.activityId, props.userId)
 
     const getActivity=(i)=>{
-        return <Activity userId={teamMatesIds[i]}
+        return <>
+                <label>{Object.keys(users).indexOf(teamMatesIds[i])>=0?users[teamMatesIds[i]].name:teamMatesIds[i]}</label><br></br>
+                <Activity userId={teamMatesIds[i]}
                   userControlled={teamMatesIds[i]==props.userId} 
                   activityId={props.activityId}
                   activityEvents={activitiesByUser[teamMatesIds[i]]}
@@ -92,6 +116,7 @@ function ActivityPanel (props) {
                     db.collection(`room/${props.roomId}/activites`).add(actObj)
                   }}
                   />
+                  </>
     }
 
     return (
@@ -99,7 +124,7 @@ function ActivityPanel (props) {
       {/* <div>Activity {props.activityId}, {props.roomId}, { props.groupId}, { props.userId}</div> */}
       {/* <div>{Object.keys(activitiesByUser).map((u)=>activitiesByUser[u].map(a=>a.value).join(', '))}</div> */}
 
-      {cols>0?(<Grid columns={cols} divided>
+      {cols>0?(<div><Grid columns={cols} divided style={{height:window.innerHeight, ...props.style}}>
             {wierd==2 &&
                 <Grid.Row>
                 {Array.apply(null, Array(cols-1)).map((m, i)=>(
@@ -130,7 +155,7 @@ function ActivityPanel (props) {
                 })}  
                 </Grid.Row>
             }
-        </Grid>):null}
+        </Grid></div>):null}
     </>)
 }
 export default ActivityPanel

@@ -18,7 +18,7 @@ function InputActivity (props) {
     const {updateFunction, activityEvents, correctAnswer, userControlled, userId, activityId} = props
     let handleUpdate = userControlled?updateFunction:()=>{}
     const latestObject = activityEvents && activityEvents.length>0? activityEvents[activityEvents.length-1]:{}
-    const correct = latestObject? getIfAnswerIsCorrect(props,latestObject): null
+    const correct = false //latestObject? getIfAnswerIsCorrect(props,latestObject): null
     return (<>
                 <Input onChange={(e, {value})=>handleUpdate(getActivityObject(props, value))} value={latestObject.value} disabled={correct||!userControlled}>
                 </Input>

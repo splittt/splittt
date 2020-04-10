@@ -1,8 +1,9 @@
 
 import React, {useState, useEffect} from 'react';
-import { Input, Button } from 'semantic-ui-react'
+import { Grid, Button } from 'semantic-ui-react'
 import {
   useParams,
+  useLocation,
   useHistory
 } from "react-router-dom";
 import cookie from 'cookie'
@@ -36,7 +37,7 @@ function User({user, group}){
     })
     return (
         <div ref={drag} >
-            {user.name}
+            {user.name} - {user.id}
         </div>
     )
 }
@@ -53,19 +54,29 @@ function Team({group, children}){
     })
     return (
         <div ref={drop} >
-            {group.name} - {group.id}
+            <label className='label-semantic'>{group.name} - {group.id}</label>
             {children}
         </div>
     )
 }
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
+
 function LobbyProfessor(props){
     const db = firebase.firestore()
     const { room_id } = useParams();
-    // const [ loaded, changeLoaded ] = useState(false)
+    const history = useHistory()
     // const [ user, changeLoaded ] = useState(false)
     const [ groups, changeGroups ] = useState({})
     const [ users, changeUsers ] = useState({})
-    
+    const [ roomData, changeRoomData ] = useState({})
+    // const withSlides = useQuery().get('withSlides')
+    useEffect(()=>{
+      if (room_id) document.cookie = cookie.serialize('room_id', room_id)
+    }, [room_id])
+
     useEffect(()=>{
       db.collection(`room/${room_id}/groups/`).onSnapshot((groupsCall)=>{
         let groupsDict = groupsCall.docs.reduce((acc,g)=>({...acc, [g.id]: {...g.data(), id:g.id, ref: g.ref}}),{})
@@ -78,19 +89,40 @@ function LobbyProfessor(props){
         changeUsers(usersDict)
       })
     },[room_id])
-    
-    
-    return (<DndProvider backend={Backend}>
-                <div>
-                {Object.values(groups).map((g)=>
-                    <Team group={g}>
-                        {g.users.filter((u)=>Object.keys(users).indexOf(u.id)>=0)
-                                .map((u)=><User user={users[u.id]} group={g}></User>)}
-                    </Team>)
+    useEffect(()=>{
+      db.collection(`room`).doc(room_id).get().then((r)=>
+        changeRoomData(r.data())
+      )
+    },[room_id])
+    return (<div className='App'>
+              <DndProvider backend={Backend}>
+                <Grid style={{borderStyle:'solid', borderColor:'#e5637c'}}>
+                <Grid.Row columns={Object.keys(groups).length}>
+                {Object.values(groups).map((g, i)=>
+                  (<Grid.Column key={1}>
+                      <Team group={g}>
+                          {g.users.filter((u)=>Object.keys(users).indexOf(u.id)>=0)
+                                  .map((u)=><User user={users[u.id]} group={g}></User>)}
+                      </Team>
+                  </Grid.Column>))
                 }
-                <Button onClick={()=>{}}>Ready</Button>
-                </div>
+                <hr></hr>
+                </Grid.Row>
+                {/* {!withSlides? */}
+                <Grid.Row>
+                  <Grid.Column>
+                  <Button primary onClick={()=>{
+                    db.collection('room').doc(room_id).update({currentActivity:roomData.activitiesIds[0]})
+                    history.push(`/room/${room_id}?activityId=${roomData.activitiesIds[0]}`)
+                  }}>Comença activitat</Button>
+                  </Grid.Column>
+                </Grid.Row>
+                {/* :null} */}
+                </Grid>
+                
             </DndProvider>
+            
+            </div>
             )
   
 }

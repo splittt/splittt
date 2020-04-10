@@ -1,14 +1,20 @@
 import React, {useState, useEffect} from 'react';
-import { Input, Button } from 'semantic-ui-react'
+import { Input, Button, Grid } from 'semantic-ui-react'
 import {
-  useParams
+  useParams,
+  useHistory,
+  useLocation
 } from "react-router-dom";
 import cookie from 'cookie'
 import firebase from '../config/firebase'
 
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 
 function Lobby(props){
     const db = firebase.firestore()
+    const history = useHistory()
     const { room_id, group_id, user_id } = useParams();
     const [ groupId, changeGroupId ] = useState(group_id)
     const [ groupsListener, changeGroupsListener ] = useState(()=>(()=>{}))
@@ -44,9 +50,38 @@ function Lobby(props){
     const getUsersNames = (refs)=>refs.filter((u)=>Object.keys(users).indexOf(u.id)>=0).map((u)=>users[u.id].name).join(', ')
     const usersNotTeam = Object.values(users).filter((u)=>u.id!=user_id && teamMatesIds.indexOf(u.id)<0)
     const me = Object.values(users).filter((u)=>u.id==user_id)
-    return (<div>
-              You are: {getUsersNames(me)}. In your team {getUsersNames(teamMates)}. Also playing: {getUsersNames(usersNotTeam)}
-            </div>)
-  
+    // let withSlides = useQuery().get('withSlides')
+    // useEffect(()=>{
+    //   if (withSlides||!user_id) return
+    //   const listener = db.collection('room').doc(room_id).onSnapshot((r)=>{
+    //     let currentActivity = r.data().currentActivity
+    //     if (currentActivity){ 
+    //       listener()
+    //       history.push(`/room/${room_id}?activityId=${currentActivity}`)
+    //     }
+    //   })
+    // }, [room_id, withSlides])
+    
+    return (<div className='App'>
+            <Grid style={{borderStyle:'solid', borderColor:'#e5637c'}}>
+              <Grid.Row>
+              <Grid.Column>
+            <label className='label-semantic'>Benvingut {getUsersNames(me)}.</label>
+              </Grid.Column>  
+              </Grid.Row>
+              <Grid.Row>
+              <Grid.Column>
+              <label className='label-semantic'>{teamMates.length>0? `Al teu equip hi ha: ${getUsersNames(teamMates)}`: `Ets l'únic membre de l'equip`}</label>
+              </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+              <Grid.Column>
+              <label className='label-semantic'> {usersNotTeam.length>0?`També són a classe: ${getUsersNames(usersNotTeam)}`:`No hi ha ningú més`}</label>
+              </Grid.Column>  
+              </Grid.Row>
+            </Grid>
+            
+          </div>)
   }
 export default Lobby
+// You are: {}. In your team {getUsersNames(teamMates)}. Also playing: {getUsersNames(usersNotTeam)}
