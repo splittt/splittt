@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Input, Button, Grid } from 'semantic-ui-react'
+import { Input, Button, Grid, Icon } from 'semantic-ui-react'
 import {
   useParams,
   useHistory,
@@ -28,6 +28,7 @@ function Lobby(props){
     const [ teamMates, changeTeamMates ] = useState([])
     const teamMatesIds = teamMates.map((u)=>u.id)
     const [ users, changeUsers ] = useState({})
+    const [ jitsi, changeJitsi ] = useState({})
     useEffect(()=>{
       if (groupsListener) groupsListener()
       let newGroupsListener = db.collection(`room/${room_id}/groups`).doc(groupId).onSnapshot((group)=>{
@@ -47,6 +48,13 @@ function Lobby(props){
       })
       changeUsersListener(()=>(newUsersListener))
     },[room_id, groupId])
+    useEffect(()=>{
+      db.collection('room').doc(room_id).get().then((r)=>{
+        if (r.data().jitsi==true){
+          changeJitsi(true)
+        }
+      })
+    },[room_id])
     const getUsersNames = (refs)=>refs.filter((u)=>Object.keys(users).indexOf(u.id)>=0).map((u)=>users[u.id].name).join(', ')
     const usersNotTeam = Object.values(users).filter((u)=>u.id!=user_id && teamMatesIds.indexOf(u.id)<0)
     const me = Object.values(users).filter((u)=>u.id==user_id)
@@ -72,6 +80,11 @@ function Lobby(props){
               <Grid.Row>
               <Grid.Column>
               <label className='label-semantic'>{teamMates.length>0? `Al teu equip hi ha: ${getUsersNames(teamMates)}`: `Ets l'únic membre de l'equip`}</label>
+              </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+              <Grid.Column>
+              <a target='_blank' href={'https://meet.jit.si/'+groupId}><Icon circular name='call'></Icon>Comunica't amb els teus companys!</a>
               </Grid.Column>
               </Grid.Row>
               <Grid.Row>

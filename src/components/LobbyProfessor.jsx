@@ -1,6 +1,6 @@
 
 import React, {useState, useEffect} from 'react';
-import { Grid, Button } from 'semantic-ui-react'
+import { Grid, Button, Icon } from 'semantic-ui-react'
 import {
   useParams,
   useLocation,
@@ -37,7 +37,7 @@ function User({user, group}){
     })
     return (
         <div ref={drag} >
-            {user.name} - {user.id}
+            {user.name}
         </div>
     )
 }
@@ -54,7 +54,7 @@ function Team({group, children}){
     })
     return (
         <div ref={drop} >
-            <label className='label-semantic'>{group.name} - {group.id}</label>
+            <label className='label-semantic'>{group.name}<Icon circular name='call' color='blue' link={'https://meet.jit.si/'+group.id} style={{marginLeft:4}}></Icon></label>
             {children}
         </div>
     )
@@ -99,16 +99,23 @@ function LobbyProfessor(props){
                 <Grid style={{borderStyle:'solid', borderColor:'#e5637c'}}>
                 <Grid.Row columns={Object.keys(groups).length}>
                 {Object.values(groups).map((g, i)=>
-                  (<Grid.Column key={1}>
+                  (<Grid.Column >
+                      <Grid columns={1}>
+                      <Grid.Row>
+                      <Grid.Column>
                       <Team group={g}>
                           {g.users.filter((u)=>Object.keys(users).indexOf(u.id)>=0)
                                   .map((u)=><User user={users[u.id]} group={g}></User>)}
                       </Team>
+                      </Grid.Column>
+                      </Grid.Row>
+                      </Grid>
                   </Grid.Column>))
                 }
                 <hr></hr>
                 </Grid.Row>
-                {/* {!withSlides? */}
+                
+                {/* !withSlides?
                 <Grid.Row>
                   <Grid.Column>
                   <Button primary onClick={()=>{
@@ -117,7 +124,7 @@ function LobbyProfessor(props){
                   }}>Comença activitat</Button>
                   </Grid.Column>
                 </Grid.Row>
-                {/* :null} */}
+                 :null} */}
                 </Grid>
                 
             </DndProvider>
