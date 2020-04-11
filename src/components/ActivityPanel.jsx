@@ -127,9 +127,9 @@ function ActivityPanel (props) {
       {/* <div>Activity {props.activityId}, {props.roomId}, { props.groupId}, { props.userId}</div> */}
       {/* <div>{Object.keys(activitiesByUser).map((u)=>activitiesByUser[u].map(a=>a.value).join(', '))}</div> */}
 
-      {cols>0?(<div><Grid columns={cols} divided style={{height:window.innerHeight-yPadding+40}}>
+      {cols>0?(<div><Grid columns={cols} divided style={{height:window.innerHeight-yPadding+40, paddingTop:'1rem'}}>
             {wierd==2 &&
-                <Grid.Row>
+                <Grid.Row style={{paddingTop:0,paddingBottom:0}}>
                 {Array.apply(null, Array(cols-1)).map((m, i)=>(
                     <Grid.Column>
                       {activityTypeData?getActivity(i, heightActivity):<p>wait...</p>}
@@ -139,7 +139,7 @@ function ActivityPanel (props) {
             }
             {rows-wierd>0 && Array.apply(null, Array(rows-wierd)).map((m, i)=>{
                 let base = wierd==2? cols-2 : 0
-                return (<Grid.Row>
+                return (<Grid.Row style={{paddingTop:0,paddingBottom:0}}>
                 {Array.apply(null, Array(cols)).map((m, i)=>(
                     <Grid.Column>
                         {activityTypeData?getActivity(i,heightActivity):<p>wait...</p>}
@@ -148,7 +148,7 @@ function ActivityPanel (props) {
                 </Grid.Row>)
             })}
             {wierd>=1 &&
-                <Grid.Row>
+                <Grid.Row style={{paddingTop:0,paddingBottom:0}}>
                 {Array.apply(null, Array(cols-1)).map((m, i)=>{
                   let base = wierd==2? cols-2:0
                   base += rows>=2? (rows-wierd)*cols : 0
