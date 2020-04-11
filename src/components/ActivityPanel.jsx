@@ -103,7 +103,7 @@ function ActivityPanel (props) {
     const [cols, rows, wierd] = getColumnAndRowsNumbers(teamMatesIds.length)
     console.log("props", props.roomId, props.groupId, props.activityId, props.userId)
 
-    const getActivity=(i)=>{
+    const getActivity=(i, heightActivity)=>{
         return <>
                 <label>{Object.keys(users).indexOf(teamMatesIds[i])>=0?users[teamMatesIds[i]].name:teamMatesIds[i]}</label><br></br>
                 <Activity userId={teamMatesIds[i]}
@@ -112,24 +112,27 @@ function ActivityPanel (props) {
                   activityEvents={activitiesByUser[teamMatesIds[i]]}
                   activityTypeData={activityTypeData}                  
                   teamMatesIds={teamMatesIds}
+                  heightActivity={heightActivity}
                   updateFunction={(actObj)=>{
                     db.collection(`room/${props.roomId}/activites`).add(actObj)
                   }}
                   />
                   </>
     }
+    let yPadding = props.yPadding?props.yPadding:35
+    let heightActivity = (window.innerHeight-yPadding)/rows
 
     return (
     <>
       {/* <div>Activity {props.activityId}, {props.roomId}, { props.groupId}, { props.userId}</div> */}
       {/* <div>{Object.keys(activitiesByUser).map((u)=>activitiesByUser[u].map(a=>a.value).join(', '))}</div> */}
 
-      {cols>0?(<div><Grid columns={cols} divided style={{height:window.innerHeight, ...props.style}}>
+      {cols>0?(<div><Grid columns={cols} divided style={{height:window.innerHeight-yPadding+40}}>
             {wierd==2 &&
                 <Grid.Row>
                 {Array.apply(null, Array(cols-1)).map((m, i)=>(
                     <Grid.Column>
-                      {activityTypeData?getActivity(i):<p>wait...</p>}
+                      {activityTypeData?getActivity(i, heightActivity):<p>wait...</p>}
                     </Grid.Column>
                 ))}  
                 </Grid.Row>
@@ -139,7 +142,7 @@ function ActivityPanel (props) {
                 return (<Grid.Row>
                 {Array.apply(null, Array(cols)).map((m, i)=>(
                     <Grid.Column>
-                        {activityTypeData?getActivity(i):<p>wait...</p>}
+                        {activityTypeData?getActivity(i,heightActivity):<p>wait...</p>}
                     </Grid.Column>
                 ))}
                 </Grid.Row>)
@@ -150,7 +153,7 @@ function ActivityPanel (props) {
                   let base = wierd==2? cols-2:0
                   base += rows>=2? (rows-wierd)*cols : 0
                   return (<Grid.Column>
-                        {activityTypeData?getActivity(i):<p>wait...</p>}
+                        {activityTypeData?getActivity(i,heightActivity):<p>wait...</p>}
                     </Grid.Column>)
                 })}  
                 </Grid.Row>

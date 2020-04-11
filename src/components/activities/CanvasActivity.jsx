@@ -44,7 +44,7 @@ function CanvasActivity(props){
     const [ref, { x, y, width, height }] = useDimensions();
 
     return (
-        <div ref={ref} style={{width:'100%', height:window.innerHeight-35}}>
+        <div ref={ref} style={{width:'100%', height:props.heightActivity}}>
             {width&&height?<CanvasDraw disabled={!userControlled} ref={canvasRef} onChange={()=>changeCanvas(canvasRef.current)} canvasWidth={width} canvasHeight={height} />:null}
 
         </div>

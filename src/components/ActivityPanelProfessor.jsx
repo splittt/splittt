@@ -25,15 +25,12 @@ function ActivityPanelProfessor(props){
     
     const panes = groups.map((g)=> ({
         menuItem: g.name,
-        render:()=>(<Tab.Pane>
-        <Grid.Column>
-        <label className='label-semantic'>{g.name}</label>
-        <ActivityPanel style={{height:window.innerHeight-160}} groupId={g.id} roomId={props.roomId} activityId={props.activityId}></ActivityPanel>
-        </Grid.Column>
+        render:()=>(<Tab.Pane style={{borderStyle:'solid', borderColor:'#e5637c'}}>
+        <ActivityPanel yPadding={180} groupId={g.id} roomId={props.roomId} activityId={props.activityId}></ActivityPanel>
         </Tab.Pane>)
     }))
 
-
+    
     return <div className='App' >
     
     <Tab menu={{ pointing: true, style:{borderStyle:'solid', borderColor:'#e5637c'} }} panes={panes}/>

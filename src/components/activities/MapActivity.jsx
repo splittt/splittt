@@ -39,7 +39,7 @@ function MapActivity (props) {
     }
     
     return (<>
-            <div ref={ref} style={{width:'100%', height:window.innerHeight-35}}>
+            <div ref={ref} style={{width:'100%', height:props.heightActivity}}>
             {width&&height?<InteractiveMap
                 // onClick={(e)=>{
                 //     saveMarker([...markers, {longitude:e.lngLat[0], latitude:e.lngLat[1], from: 8, value: 8 }])
