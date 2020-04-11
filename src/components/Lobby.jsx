@@ -58,17 +58,17 @@ function Lobby(props){
     const getUsersNames = (refs)=>refs.filter((u)=>Object.keys(users).indexOf(u.id)>=0).map((u)=>users[u.id].name).join(', ')
     const usersNotTeam = Object.values(users).filter((u)=>u.id!=user_id && teamMatesIds.indexOf(u.id)<0)
     const me = Object.values(users).filter((u)=>u.id==user_id)
-    // let withSlides = useQuery().get('withSlides')
-    // useEffect(()=>{
-    //   if (withSlides||!user_id) return
-    //   const listener = db.collection('room').doc(room_id).onSnapshot((r)=>{
-    //     let currentActivity = r.data().currentActivity
-    //     if (currentActivity){ 
-    //       listener()
-    //       history.push(`/room/${room_id}?activityId=${currentActivity}`)
-    //     }
-    //   })
-    // }, [room_id, withSlides])
+    let withSlides = useQuery().get('withSlides')
+    useEffect(()=>{
+      if (withSlides||!user_id) return
+      const listener = db.collection('room').doc(room_id).onSnapshot((r)=>{
+        let currentActivity = r.data().currentActivity
+        if (currentActivity){ 
+          listener()
+          history.push(`/room/${room_id}?activityId=${currentActivity}`)
+        }
+      })
+    }, [room_id, withSlides])
     
     return (<div className='App'>
             <Grid style={{borderStyle:'solid', borderColor:'#e5637c'}}>

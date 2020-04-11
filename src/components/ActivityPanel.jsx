@@ -88,17 +88,17 @@ function ActivityPanel (props) {
         })
     }, [props.activityId])
 
-    // let withSlides = useQuery().get('withSlides')
-    // useEffect(()=>{
-    //   if (withSlides) return
-    //   const listener = db.collection('room').doc(props.roomId).onSnapshot((r)=>{
-    //     let currentActivity = r.data().currentActivity
-    //     if (currentActivity){ 
-    //       listener()
-    //       history.push(`/room/${props.roomId}?activityId=${currentActivity}`)
-    //     }
-    //   })
-    // }, [props.roomId, withSlides])
+    let withSlides = useQuery().get('withSlides')
+    useEffect(()=>{
+      if (withSlides || !props.roomId) return
+      const listener = db.collection('room').doc(props.roomId).onSnapshot((r)=>{
+        let currentActivity = r.data().currentActivity
+        if (currentActivity){ 
+          listener()
+          history.push(`/room/${props.roomId}?activityId=${currentActivity}`)
+        }
+      })
+    }, [props.roomId, withSlides])
 
     const [cols, rows, wierd] = getColumnAndRowsNumbers(teamMatesIds.length)
     console.log("props", props.roomId, props.groupId, props.activityId, props.userId)

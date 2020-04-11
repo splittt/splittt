@@ -54,7 +54,7 @@ function Team({group, children}){
     })
     return (
         <div ref={drop} >
-            <label className='label-semantic'>{group.name}<Icon circular name='call' color='blue' link={'https://meet.jit.si/'+group.id} style={{marginLeft:4}}></Icon></label>
+            <label className='label-semantic'>{group.name}<a href={'https://meet.jit.si/'+group.id} target='_blank'><Icon circular name='call' color='blue' style={{marginLeft:4}}></Icon></a></label>
             {children}
         </div>
     )
@@ -72,7 +72,7 @@ function LobbyProfessor(props){
     const [ groups, changeGroups ] = useState({})
     const [ users, changeUsers ] = useState({})
     const [ roomData, changeRoomData ] = useState({})
-    // const withSlides = useQuery().get('withSlides')
+    const withSlides = useQuery().get('withSlides')
     useEffect(()=>{
       if (room_id) document.cookie = cookie.serialize('room_id', room_id)
     }, [room_id])
@@ -115,7 +115,7 @@ function LobbyProfessor(props){
                 <hr></hr>
                 </Grid.Row>
                 
-                {/* !withSlides?
+                {!withSlides?
                 <Grid.Row>
                   <Grid.Column>
                   <Button primary onClick={()=>{
@@ -124,7 +124,7 @@ function LobbyProfessor(props){
                   }}>Comença activitat</Button>
                   </Grid.Column>
                 </Grid.Row>
-                 :null} */}
+                 :null}
                 </Grid>
                 
             </DndProvider>
