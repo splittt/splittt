@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useCallback} from 'react';
 import {  Input } from 'semantic-ui-react';
 
 const getActivityObject = ({activityId, userId}, value)=>{
@@ -17,12 +17,30 @@ const getIfAnswerIsCorrect = ({correctAnswer},activityObject)=>{
 function InputActivity (props) {
     const {updateFunction, activityEvents, correctAnswer, userControlled, userId, activityId} = props
     let handleUpdate = userControlled?updateFunction:()=>{}
-    const latestObject = activityEvents && activityEvents.length>0? activityEvents[activityEvents.length-1]:{}
+    // const latestObject = activityEvents && activityEvents.length>0? activityEvents[activityEvents.length-1]:{}
+    const [input, changeInput] = useState('')
+    const handleUserKeyPress = useCallback(event => {
+        const { key, keyCode } = event;    
+        if (keyCode === 13) {
+            handleUpdate(getActivityObject(props,input ))
+            changeInput('')
+        }
+    }, [input]);
+
+    useEffect(() => {
+        window.addEventListener('keydown', handleUserKeyPress);
+
+        return () => {
+            window.removeEventListener('keydown', handleUserKeyPress);
+        };
+    }, [handleUserKeyPress]);
+
+      
     const correct = false //latestObject? getIfAnswerIsCorrect(props,latestObject): null
     return (<>
-                <Input onChange={(e, {value})=>handleUpdate(getActivityObject(props, value))} value={latestObject.value} disabled={correct||!userControlled}>
+                <Input onChange={(e, {value})=>changeInput(value)} value={input} disabled={!userControlled}>
                 </Input>
-                <div>{correct?`Molt bé!, la resposta correcta era ${correctAnswer}`:null}</div>
+                <div>{activityEvents? activityEvents.map(a=>a.value).join(', '):null}</div>
             </>)
 }
 

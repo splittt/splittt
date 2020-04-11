@@ -12,10 +12,9 @@ export const activityComponents = {
     'canvasActivity': CanvasActivity,
     'mapActivity': MapActivity
 }
-
+// 'correctAnswer': {'element':Form.Input, 'label': 'Resposta correcta'}
 export const activityExtraFields = {
     'inputActivity': {
-        'correctAnswer': {'element':Form.Input, 'label': 'Resposta correcta'}
     },
     'canvasActivity':{},
     'mapActivity':{}

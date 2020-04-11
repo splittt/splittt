@@ -84,7 +84,7 @@ function CreateActivityModal (props) {
                     onChange={getChangeActivityDataKey('type')}
                 >
                 </Form.Dropdown>
-                <Form.Checkbox checked={timed} onChange={()=>changeTimed(!timed)} label="Timed"/>
+                <Form.Checkbox checked={timed} onChange={()=>changeTimed(!timed)} label="Amb temps"/>
                 {timed?<Form.Input label="Nombre de segons per respondre" type='number' onChange={getChangeActivityDataKey('time')} value={activityData['time']}></Form.Input>:null}
                 {activityData.type?Object.keys(activityExtraFields[activityData.type]).map((k)=>{
                     return quickFormElement(activityExtraFields[activityData.type][k], getChangeActivityDataKey(k))
@@ -134,12 +134,18 @@ function createJSONslides (id, roomValues,selectedActivities){
           },
           {
             "type": "text",
-            "value": "Modifica aquesta presentació tant com vulguis!"
+            "value": 'Fes click a "Save deck" per poder modificar la presentació',
+            "format": "h2"
+          },
+          {
+            "type": "image",
+            "value": "https://raw.githubusercontent.com/splittt/splittt/master/public/savedeck.png"
           },
           {
             "type": "text",
-            "value": `Aquesta presentació tindrà ${roomValues.numGroups} grups`
-          }
+            "value": '👇',
+            "format": "h1"
+          },
         ]
       },
       {
@@ -152,7 +158,7 @@ function createJSONslides (id, roomValues,selectedActivities){
           },
           {
             "type": "text",
-            "value": "És important presentar la classe al mateix navegador on l'has creat desde splittt.com"
+            "value": `Aquesta presentació tindrà ${roomValues.numGroups} grups`
           },
           {
             "type": "iframe",
