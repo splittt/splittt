@@ -31,7 +31,7 @@ const createRoom=(roomValues, selectedActivities, changeRoomId)=>{
     ))
     document.cookie = cookie.serialize('professor', roomDoc.id)
     changeRoomId(roomDoc.id)
-    Promise.all([setValuesPromise, initGroupsPromise])//.then(()=>changeLink(document.location.href+'room/'+roomDoc.id))
+    Promise.all([setValuesPromise, initGroupsPromise])
 }
 
 const createActivity=(activityData)=>{
@@ -101,9 +101,11 @@ function CreateActivityModal (props) {
         </Modal.Content>
         </Modal>)
 }
-
+function getDomain(){
+  return document.location.href.slice(0,-3)
+}
 function createJSONslides (id, roomValues,selectedActivities){
-  const link = document.location.href+'room/'+id
+  const link = getDomain()+'room/'+id
   const getSlide = (activity)=>{
     return {"blocks": [
               {
@@ -174,7 +176,6 @@ function createJSONslides (id, roomValues,selectedActivities){
 
 function Teacher (props) {
     const [showLink, changeShowLink] = useState(false)
-    // const showLink = document.location.href+'room/'+roomId
     const form = useRef(null)
     const db = firebase.firestore()
     const [roomValues, changeRoomValues] = useState({numGroups:1, name:''})
@@ -291,9 +292,9 @@ function Teacher (props) {
           <Grid.Column>
           {showLink?
             <div>Aquí tens el link per compartir: <br/>
-                <a href={document.location.href+'room/'+roomValues.id}>{document.location.href+'room/'+roomValues.id}</a>
+                <a href={getDomain()+'room/'+roomValues.id}>{getDomain()+'room/'+roomValues.id}</a>
                 <br></br>
-                {selectedActivities.map(a=><><a href={document.location.href+'room/'+roomValues.id+'?activityId='+a.id}>{document.location.href+'room/'+roomValues.id+'?activityId='+a.id}</a><br/></>)}
+                {selectedActivities.map(a=><><a href={getDomain()+'room/'+roomValues.id+'?activityId='+a.id}>{getDomain()+'room/'+roomValues.id+'?activityId='+a.id}</a><br/></>)}
                 </div>
           
           :null}
