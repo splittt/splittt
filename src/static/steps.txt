@@ -1,0 +1,7 @@
+const steps = {
+  activity: [{src:profe1, text:'hey'}],
+  classrom: [{src:profe1, text:'hey'}],
+  classrom2: [{src:profe1, text:'hey'}],
+  classrom3: [{src:profe1, text:'hey'}],
+  dev: [{src:profe1, text:'hey'}],
+}

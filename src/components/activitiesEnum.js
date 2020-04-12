@@ -3,7 +3,7 @@ import { Form } from 'semantic-ui-react'
 import CanvasActivity from './activities/CanvasActivity'
 import MapActivity from './activities/MapActivity'
 export const activityNames = {
-    'inputActivity': "Text amb resposta correcta",
+    'inputActivity': "Llistat de paraules",
     'canvasActivity': "Pintar",
     'mapActivity': "Mapa"
 }

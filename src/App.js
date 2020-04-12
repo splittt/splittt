@@ -14,11 +14,13 @@ import Teacher from './components/Teacher'
 import LobbyProfessor from './components/LobbyProfessor'
 import Room from './components/Room'
 import Lobby from './components/Lobby'
+
 import firebase from './config/firebase'
 import ActivityPanel from './components/ActivityPanel'
 import ActivityPanelProfessor from './components/ActivityPanelProfessor'
-
+import LandingPage from './components/LandingPage'
 import 'semantic-ui-less/semantic.less'
+import Recursos from './components/Recursos';
 
 
 function Play(props){
@@ -50,6 +52,12 @@ function App() {
     
       <Switch>
         <Route exact path="/">
+          <LandingPage></LandingPage>
+        </Route>
+        <Route exact path="/resources">
+          <Recursos></Recursos>
+        </Route>
+        <Route exact path="/new">
           <Teacher></Teacher>
         </Route>
         <Route exact path="/room/:room_id">
