@@ -1,35 +1,36 @@
-import React from 'react'
+import React, { useState , useEffect} from 'react'
 import {Tab, Header, Container} from 'semantic-ui-react'
 import {comm, maths} from './recursos_diagrams'
 import MenuSplit from './MenuSplit'
+import axios from 'axios'
+const objResources = [
+    {name:'Comunicació', src:"https://raw.githubusercontent.com/splittt/splittt/master/resources/comm.txt"},
+    {name:'Col·laboratiu', src:"https://raw.githubusercontent.com/splittt/splittt/master/resources/colab.txt"},
+    {name:'Llengua', src:"https://raw.githubusercontent.com/splittt/splittt/master/resources/llengues.txt"},
+    {name:'Matemàtiques', src:"https://raw.githubusercontent.com/splittt/splittt/master/resources/mates.txt"},
+    {name:'Ciències', src:"https://raw.githubusercontent.com/splittt/splittt/master/resources/ciencies.txt"},
+    {name:'Música', src:"https://raw.githubusercontent.com/splittt/splittt/master/resources/musica.txt"}
+]
+function Diagram({r}){
+
+    const [url, changeUrl] = useState('')
+    useEffect(()=>{
+        axios.get(r.src).then((v)=>{
+            changeUrl(v.data)
+        }).catch(()=>{console.log('bad')})
+    },[r])
+    return (
+        <Tab.Pane>
+            <iframe frameborder="0" style={{width:'100%',height:window.innerHeight-150}} src={url}></iframe>
+        </Tab.Pane>
+    )
+
+}
 function panes(){
-    return [
-        {
-            menuItem: 'Comunicació',
-            render:()=>(<Tab.Pane><iframe frameborder="0" style={{width:'100%',height:window.innerHeight-150}} src={comm}></iframe></Tab.Pane>)
-        },
-        {
-            menuItem: 'Col·laboratiu',
-            render:()=>(<div></div>)
-        },
-        {
-            menuItem: 'Llengua',
-            render:()=>(<div></div>)
-        },
-        {
-            menuItem: 'Matemàtiques',
-            render:()=>(<Tab.Pane><iframe frameborder="0" style={{width:'100%',height:window.innerHeight-150}} src={maths}></iframe></Tab.Pane>)
-        },
-        {
-            menuItem: 'Ciències',
-            render:()=>(<div></div>)
-        },
-        {
-            menuItem: 'Art',
-            render:()=>(<div></div>)
-        }
-        
-    ]
+    return objResources.map((r)=>({
+        menuItem:r.name,
+        render:()=><Diagram r={r}/>
+    }))
 }
 function Recursos(){
 
