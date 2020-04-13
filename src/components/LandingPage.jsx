@@ -40,7 +40,12 @@ import dev1 from '../static/dev.png'
 import dev2 from '../static/dev2.png'
 import dev3 from '../static/dev3.png'
 import dev4 from '../static/dev4.png'
-
+import gif1 from '../static/gif1.gif'
+import gif2 from '../static/gif2.gif'
+import gif3 from '../static/gif3.gif'
+import CustomDotGroup from './CustomDotGroup'
+import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
+import 'pure-react-carousel/dist/react-carousel.es.css';
 
 const steps = {
   activity: [
@@ -99,8 +104,31 @@ const FixedMenuLayout = (props) => {
     </Container>
     <hr></hr>
     <Container>
+      <Header as='h2' style={{margin:'40px'}}>Tipus d'activitats</Header>
+      <CarouselProvider
+        naturalSlideHeight={425}
+        naturalSlideWidth={900}
+        totalSlides={3}
+        orientation={'horizontal'}
+      >
+        <Slider>
+          <Slide tag="a" index={0}>
+            <img src={gif1} />
+          </Slide>
+          <Slide tag="a" index={1}>
+            <img src={gif2} />
+          </Slide>
+          <Slide tag="a" index={2}>
+            <img src={gif3} />
+          </Slide>
+        </Slider>
+        <CustomDotGroup slides={3} />
+      </CarouselProvider>
+    </Container>
+    <hr></hr>
+    <Container>
       <Header as='h2' style={{margin:'40px'}}>Guia d'ús</Header>
-      <Grid columns={3}>
+      <Grid columns={3} style={{marginBottom:'40px'}}>
         <Grid.Row>
           <Grid.Column>
             <Header>
@@ -163,6 +191,7 @@ const FixedMenuLayout = (props) => {
       </Grid>
       
     </Container>
+    
     {openLightbox!=null&&
         <Lightbox
             mainSrc={images[photoIndex].src}
