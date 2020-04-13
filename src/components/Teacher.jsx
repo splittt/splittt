@@ -10,7 +10,6 @@ import Backend from 'react-dnd-html5-backend'
 import {activityExtraFields, activityNames} from './activitiesEnum'
 import axios from 'axios'
 
-
 //DBs
 const createRoom=(roomValues, selectedActivities, changeRoomId)=>{
     const db = firebase.firestore()
