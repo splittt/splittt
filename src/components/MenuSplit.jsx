@@ -17,6 +17,7 @@ import {
     Link
   } from "react-router-dom";
 import final_image from '../static/final_image.png'
+
 function MenuSplit(){
     return (<Menu fixed='top' inverted >
         <Container>
@@ -28,12 +29,12 @@ function MenuSplit(){
 
         <Dropdown item simple text='Recursos' as="a" href='#/resources'>
             <Dropdown.Menu>
-            <Dropdown.Item>Comunicació</Dropdown.Item>
-            <Dropdown.Item>Col·laboració</Dropdown.Item>
-            <Dropdown.Item>Llengua</Dropdown.Item>
-            <Dropdown.Item>Ciència</Dropdown.Item>
-            <Dropdown.Item>Matemàtiques</Dropdown.Item>
-            <Dropdown.Item>Música</Dropdown.Item>
+            <Dropdown.Item href="#/resources?r=com">Comunicació</Dropdown.Item>
+            <Dropdown.Item href="#/resources?r=colab">Col·laboració</Dropdown.Item>
+            <Dropdown.Item href="#/resources?r=llengua">Llengua</Dropdown.Item>
+            <Dropdown.Item href="#/resources?r=ciencia">Ciència</Dropdown.Item>
+            <Dropdown.Item href="#/resources?r=mates">Matemàtiques</Dropdown.Item>
+            <Dropdown.Item href="#/resources?r=musica">Música</Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown> 
         <Menu.Item position='right' as='a'  ><Button href='#/new' primary className='App'><Icon name='add' color='white'></Icon>Nova classe</Button></Menu.Item>
