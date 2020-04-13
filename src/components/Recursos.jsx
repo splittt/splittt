@@ -49,7 +49,7 @@ function Recursos(){
     return <><MenuSplit/><div className='App'>
         <Container>
         <Header as='h1' style={{padding:20}}>Recursos</Header>
-        <Tab defaultActiveIndex={r?getIndexR(r):0} menu={{ pointing: true, style:{borderStyle:'solid', borderColor:'#e5637c'} }} panes={panes()}/>
+        <Tab defaultActiveIndex={r?getIndexR(r):0} menu={{ pointing: true, style:{overflowX: 'auto', overflowY:'hidden', borderStyle:'solid', borderColor:'#e5637c'} }} panes={panes()}/>
         </Container>
         </div></>
     

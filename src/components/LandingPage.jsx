@@ -100,7 +100,7 @@ const FixedMenuLayout = (props) => {
       <Header as='h1'>splittt</Header>
       <p>splittt et permet crear fàcilment activitats cooperatives en temps real</p>
       
-      <iframe width="560" height="315" style={{paddingBottom:20}} src="https://www.youtube.com/embed/bQ7h3bw65oY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <iframe width='100%' height="315" style={{paddingBottom:20}} src="https://www.youtube.com/embed/bQ7h3bw65oY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       <Divider/>
       <p> amb l'ajuda de:</p>
       <p><img src={slides} width={250}/><img src={jitsi} width={250}/></p>
@@ -117,13 +117,13 @@ const FixedMenuLayout = (props) => {
       >
         <Slider>
           <Slide tag="a" index={0}>
-            <img src={gif1} />
+            <img src={gif1} style={{width:'100%'}}/>
           </Slide>
           <Slide tag="a" index={1}>
-            <img src={gif2} />
+            <img src={gif2} style={{width:'100%'}}/>
           </Slide>
           <Slide tag="a" index={2}>
-            <img src={gif3} />
+            <img src={gif3} style={{width:'100%'}}/>
           </Slide>
         </Slider>
         <CustomDotGroup slides={3} />
@@ -132,7 +132,7 @@ const FixedMenuLayout = (props) => {
     <hr></hr>
     <Container>
       <Header as='h2' style={{margin:'40px'}}>Guia d'ús</Header>
-      <Grid columns={3} style={{marginBottom:'40px'}}>
+      <Grid columns={3} style={{marginBottom:'40px'}} stackable>
         <Grid.Row>
           <Grid.Column>
             <Header>

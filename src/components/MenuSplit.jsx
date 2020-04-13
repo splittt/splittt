@@ -37,7 +37,7 @@ function MenuSplit(){
             <Dropdown.Item href="#/resources?r=musica">Música</Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown> 
-        <Menu.Item position='right' as='a'  ><Button href='#/new' primary className='App'><Icon name='add' color='white'></Icon>Nova classe</Button></Menu.Item>
+        <Menu.Item position='right' as='a'  ><Button href='#/new' primary className='App'><Icon name='add' color='white'></Icon>{window.innerWidth>500?"Nova classe":null}</Button></Menu.Item>
         </Container>
     </Menu>)
 }
