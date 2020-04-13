@@ -95,15 +95,19 @@ const FixedMenuLayout = (props) => {
   return <div className='App'>
     <MenuSplit/>
 
-    <Container text style={{ marginTop: '2em', minHeight: window.innerHeight-80}}>
-      <img src={animated?logo_animated:final_image} alt="loading..." style={{height:window.innerHeight/2.5}}/>
+    <Container text style={{ marginTop: '2em', paddingBottom:20, minHeight: window.innerHeight-80}}>
+      <img src={animated?logo_animated:final_image} alt="loading..." style={{height:window.innerHeight/4}}/>
       <Header as='h1'>splittt</Header>
-      <p>splittt et permet crear fàcilment activitats cooperatives en temps real amb l'ajuda de...:</p>
+      <p>splittt et permet crear fàcilment activitats cooperatives en temps real</p>
+      
+      <iframe width="560" height="315" style={{paddingBottom:20}} src="https://www.youtube.com/embed/bQ7h3bw65oY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <Divider/>
+      <p> amb l'ajuda de:</p>
       <p><img src={slides} width={250}/><img src={jitsi} width={250}/></p>
       <Button primary href='#/new'>Comença ara!</Button>
     </Container>
     <hr></hr>
-    <Container>
+    <Container style={{paddingBottom:20}}>
       <Header as='h2' style={{margin:'40px'}}>Tipus d'activitats</Header>
       <CarouselProvider
         naturalSlideHeight={425}
