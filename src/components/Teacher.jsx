@@ -258,7 +258,7 @@ function Teacher (props) {
             <textarea style={{display:'none'}} name="definition">{`${JSON.stringify({})}`}</textarea>
         </form>
         <Button.Group style={{marginBottom:20}}>
-          <Button disabled={!roomValues.name||selectedActivities.length==0} onClick={()=>{
+          <Button disabled={true} onClick={()=>{
             if(!roomValues.id){
               createRoom(roomValues, selectedActivities, (id)=>{
                 changeRoomValues({...roomValues, id:id})
